@@ -11,30 +11,31 @@ def print_help():
     help_message = "Pot odds tell you what you stand to win relative to what you are risking.  Here is an example, pot is at 9bb and villain bets all-in at 9bb making the pot 18bb.  To stay in you must call 9bb.  The pot odds are 2:1 (reward:risk)."
     print(help_message)
 
-def generate_whole_odds(calls = 0):
+def generate_whole_odds(calls = 0, scaleUp = True):
     # Odds = (pot + bet) : your call
     # Odds = (pot + bet*(number of calls + 1)) / your call
     # bet = pot / (odds - <number of calls + 1>)
     
     options = random.sample(range(1+calls+1,10), 4)
     correct = options[random.randint(0,3)]
-    pot = random.randint(0, 20) * (correct - (1 + calls))
-    bet = pot / (correct - (1 + calls))
+    scale = (correct - (1+calls)) if scaleUp else 1
+    pot = random.randint(1, 20) * scale
+    bet = int(pot / (correct - (1 + calls)))
 
     return (options, correct, pot, bet)
 
 def main():
+    os.system('clear')
     print_help()
     enter_to_continue()
 
     input_key = 0
 
     while(1):
-        os.system('clear')
-
+        print("-------------------------------------")
         (options, correct, pot, bet) = generate_whole_odds()
 
-        message = "Pot: {}\nVillain Bet: {}\nWhat are the odds: ".format(pot, bet)
+        message = "Pot: {}bb, Villain Bet: {}bb\nWhat are the odds: ".format(pot, bet)
         print(message)
         keys = ['a','s','d','f']
         for o,k in zip(options,keys):
@@ -60,7 +61,8 @@ def main():
         else:
             print("Invalid input: {}".format(input_key))
 
-        enter_to_continue()
+        print("{} + {} = {}".format(pot,bet,pot+bet))
+        print("{} / {} = {}".format(pot+bet,bet,(pot+bet)/bet))
 
 if __name__ == '__main__':
     main()
