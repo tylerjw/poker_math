@@ -9,7 +9,7 @@ Application for teaching oneself the basic math of poker.  Based on book [Essent
 * [pyenv](https://github.com/pyenv/pyenv-installer)
 
 ## Setup virtual environment and install dependencies:
-   ```python
+   ```bash
    $ make init
    $ make dep
    ```
