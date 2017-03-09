@@ -12,13 +12,14 @@ def print_help():
 
 def select_game():
     selection = 0
-    options = [1, 2, 3]
+    options = list(range(1,5))
     while(selection == 0):
         message =  "1 - Whole number odds, scaled up to whole number bets and pots\n"
         message += "2 - Whole number odds, fractional bets and pots\n"
-        message += "3 - Whole number odds, 1 call"
+        message += "3 - Whole number odds, 1 call\n"
+        message += "4 - Whole number odds, 0-3 calls"
         print(message)
-        selection = input("Select Difficulty: ")
+        selection = input("Select Difficulty {}: ".format(options))
         if selection.isdigit():
             selection = int(selection)
             if selection not in options:
@@ -36,7 +37,7 @@ def generate_whole_odds(calls = 0, scaleUp = True):
     # Odds = (pot + bet*(number of calls + 1)) / your call
     # bet = pot / (odds - <number of calls + 1>)
     
-    options = random.sample(range(1+calls+1,10), 4)
+    options = random.sample(range(2+calls,9), 4)
     odds = options[random.randint(0,3)]
     pot = random.randint(1, 20)
     if scaleUp:
@@ -54,11 +55,11 @@ def main():
     calls = 0
     calls_string = ''
     scale_up = True
-    if game == 2 or game == 3:
+    if game > 1:
         scale_up = False
     if game == 3:
         calls = 1
-        calls_string = 'One player calls, '
+        calls_string = ', One player calls'
 
     input_key = 0
 
@@ -67,6 +68,15 @@ def main():
 
     while(1):
         print("-------------------------------------")
+        if game == 4:
+            calls = random.randint(0,3)
+            if calls == 0:
+                calls_string = ''
+            elif calls == 1:
+                calls_string = ', 1 player calls'
+            else:
+                calls_string = ', {} players call'.format(calls)
+
         (options, odds, pot, bet) = generate_whole_odds(calls, scale_up)
 
         message = "Pot: {}bb, Villain Bet: {}bb{}\nWhat are the odds: ".format(pot, bet, calls_string)
@@ -98,8 +108,10 @@ def main():
         else:
             print("Invalid input: {}".format(input_key))
 
-        print("{} + {} = {}".format(pot,bet,pot+bet))
-        print("{} / {} = {}".format(pot+bet,bet,(pot+bet)/bet))
+        bets = bet*(1+calls)
+        print("{} * (1 + {}) = {}".format(bet,calls,bets))
+        print("{} + {} = {}".format(pot,bets,pot+bets))
+        print("{} / {} = {}".format(pot+bets,bet,(pot+bets)/bet))
 
         print("{} of {} correct, {:0.2f}%".format(num_correct, num_tries, num_correct/num_tries*100))
 
