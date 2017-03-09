@@ -31,6 +31,9 @@ def main():
 
     input_key = 0
 
+    num_correct = 0
+    num_tries = 0
+
     while(1):
         print("-------------------------------------")
         (options, correct, pot, bet) = generate_whole_odds()
@@ -52,10 +55,13 @@ def main():
             or input_key == '\x04'):
             break
 
+        num_tries += 1
+
         if input_key in keys:
             i = keys.index(input_key)
             if options[i] == correct:
                 print("Correct!")
+                num_correct += 1
             else:
                 print("Error: Correct answer was {}:1, you selected {}:1".format(correct, options[i]))
         else:
@@ -63,6 +69,8 @@ def main():
 
         print("{} + {} = {}".format(pot,bet,pot+bet))
         print("{} / {} = {}".format(pot+bet,bet,(pot+bet)/bet))
+
+        print("{} of {} correct, {:0.2f}%".format(num_correct, num_tries, num_correct/num_tries*100))
 
 if __name__ == '__main__':
     main()
