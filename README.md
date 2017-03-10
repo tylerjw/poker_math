@@ -4,6 +4,7 @@ Application for teaching oneself the basic math of poker.  Based on book [Essent
 
 ## Games
 * src/pot_odds.py - based on chapter 6, only whole numbers
+* src/flashcards.py - flashcards, uses resources/flashcards.csv
 
 ## Dependencies
 * [pyenv](https://github.com/pyenv/pyenv-installer)
